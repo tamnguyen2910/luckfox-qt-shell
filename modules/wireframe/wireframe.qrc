@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/wireframe">
+        <file>qml/WireframeTab.qml</file>
+    </qresource>
+</RCC>

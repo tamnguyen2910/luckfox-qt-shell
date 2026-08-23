@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab Bar Mẫu 2 — The Bridge (solid dark + mint neon)</title>
+<style>
+  :root {
+    --bg: #05070c;
+    --rail: #0b0b10;
+    --mint: #2dd4bf;
+    --text: #e8edf5;
+    --dim: #4a4a5e;
+    --muted: #8899aa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    padding: 24px 32px 80px;
+  }
+  h1 { font-size: 24px; letter-spacing: 1px; }
+  h1 small { color: var(--mint); font-weight: 400; }
+  .sub { color: var(--muted); font-size: 13px; margin: 10px 0 18px; max-width: 820px; line-height: 1.55; }
+  h2 { font-size: 18px; margin: 44px 0 8px; padding-top: 24px; border-top: 1px solid #1e2740; }
+  h2 .badge {
+    background: var(--mint); color: #052018; font-size: 11px;
+    padding: 2px 8px; border-radius: 20px; font-weight: 700; margin-right: 10px;
+  }
+  .stage-wrap { margin: 16px 0 8px; }
+  .stage-frame {
+    width: 100%; max-width: 760px; position: relative;
+    border-radius: 14px; overflow: hidden; border: 1px solid #1e2740;
+    background: #000; touch-action: none; user-select: none;
+  }
+  .stage-frame .hint {
+    position: absolute; bottom: 8px; right: 10px; z-index: 5;
+    color: #b9c4d8; font-size: 11px; opacity: .85; pointer-events: none;
+  }
+  table.spec { border-collapse: collapse; margin: 14px 0 8px; font-size: 13px; max-width: 760px; }
+  table.spec th, table.spec td { text-align: left; padding: 6px 12px; border: 1px solid #1e2740; }
+  table.spec th { background: #0d1322; color: var(--mint); font-weight: 600; }
+  table.spec td code { color: #9ece6a; }
+  table.spec tr td:first-child { color: var(--dim); white-space: nowrap; }
+  pre.code {
+    background: #0d1322; border: 1px solid #1e2740; border-radius: 10px;
+    padding: 16px; font-size: 12px; line-height: 1.6; overflow-x: auto;
+    font-family: "Cascadia Code", Consolas, monospace; color: #c9d4e6; max-width: 760px;
+  }
+  pre.code .c { color: #556677; }
+  pre.code .k { color: #7aa2f7; }
+  pre.code .s { color: #9ece6a; }
+  ul.notes { margin: 10px 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.8; max-width: 760px; }
+  ul.notes b { color: var(--text); }
+</style>
+</head>
+<body>
+
+<h1>Tab Bar Mẫu 2 — <small>"The Bridge" (solid dark + mint neon)</small></h1>
+<p class="sub">
+  Thiết kế tab bar dọc đang chạy trên Luckfox Shell (800&times;480, Qt 5.15 / linuxfb / RV1106).
+  Nền tối đặc (tuyệt đối không blur/glass), tab squircle, active = nền Accent đặc + phóng to búng,
+  điểm nhấn là <b style="color:#2dd4bf">cầu nối (Bridge)</b> vươn từ tab active vào vùng nội dung.
+  Demo tương tác dưới đây — click để chuyển tab (có ripple), hover xem trạng thái.
+</p>
+
+<!-- ================= DEMO ================= -->
+<h2><span class="badge">DEMO</span> Tương tác trực tiếp</h2>
+<div class="stage-wrap">
+<div class="stage-frame" id="stage" style="background:linear-gradient(180deg,#0b0e16,#05070c)">
+  <div id="rail" style="position:absolute;left:0;top:0;bottom:0;width:76px;background:#0b0b10">
+    <div style="position:absolute;right:0;top:0;bottom:0;width:1px;background:rgba(255,255,255,.05)"></div>
+    <div id="tabs" style="position:absolute;left:50%;top:16px;transform:translateX(-50%);display:flex;flex-direction:column;gap:10px"></div>
+    <div style="position:absolute;left:50%;top:50%;width:24px;height:1px;background:rgba(255,255,255,.10);transform:translate(-50%,-50%)"></div>
+    <div id="settingsTab" style="position:absolute;left:50%;bottom:16px;transform:translateX(-50%)"></div>
+  </div>
+  <div id="bridge" style="position:absolute;left:74px;top:38px;width:22px;height:4px;border-radius:2px;background:#2dd4bf;transform-origin:left center;transition:top .34s cubic-bezier(.34,1.56,.64,1), transform .32s cubic-bezier(.34,1.56,.64,1)"></div>
+  <div id="page" style="position:absolute;left:88px;right:12px;top:12px;bottom:12px;border-radius:14px;display:flex;align-items:center;justify-content:center">
+    <div style="text-align:center">
+      <div id="pageTitle" style="font-size:26px;font-weight:700;color:#c9d4e6"></div>
+      <div id="pageSub" style="font-size:12px;color:#4a4a5e;margin-top:6px"></div>
+    </div>
+  </div>
+  <div class="hint">click chuyển tab (có ripple) · hover xem trạng thái</div>
+</div>
+</div>
+
+<table class="spec">
+  <tr><th>Thuộc tính</th><th>Giá trị</th></tr>
+  <tr><td>Rail</td><td>rộng <code>76px</code>, nền đặc <code>#0b0b10</code> (0% blur), viền phải <code>1px rgba(255,255,255,.05)</code></td></tr>
+  <tr><td>Tab</td><td>squircle <code>48&times;48</code> radius <code>16</code>, spacing <code>10</code>, top margin <code>16</code>, icon <code>20px</code></td></tr>
+  <tr><td>Normal</td><td>nền transparent, icon <code>#4a4a5e</code> (chìm)</td></tr>
+  <tr><td>Hover</td><td>nền <code>rgba(255,255,255,.03)</code>, icon <code>#8a8a9e</code></td></tr>
+  <tr><td>Active</td><td>nền <b>Accent đặc <code>#2dd4bf</code></b> + icon tối <code>#052018</code>, <b>scale 1.06</b> (OutBack overshoot 1.8) — không viền/label/ring</td></tr>
+  <tr><td>Bridge</td><td><code>22&times;4px</code>, radius 2, màu accent, <code>x = 74</code> (railWidth-2) vươn 8px qua mép page; trượt dọc <code>340ms</code> OutBack 1.6 + co <code>scaleX 0&rarr;1</code> OutBack 1.8 mỗi lần đổi tab</td></tr>
+  <tr><td>Ripple</td><td>vòng tròn 64px accent nhạt <code>rgba(45,212,191,.30)</code> từ điểm chạm, scale 0.1&rarr;1.6 + fade trong <code>500ms</code>, clip trong squircle</td></tr>
+  <tr><td>Content</td><td>StackLayout margin 12: trang mới trượt <code>translateX 60&rarr;0</code> <code>420ms</code> OutBack 1.2 — không fade/scale</td></tr>
+  <tr><td>Divider</td><td>đường ngang <code>24&times;1px</code> <code>rgba(255,255,255,.10)</code> căn giữa rail, ngăn nhóm tab chính với tab Settings đáy</td></tr>
+  <tr><td>Layout</td><td>5 tab (photo, mic, dashboard, calendar, music) + divider + settings cố định đáy; <code>y bridge = 16 + idx&times;58 + 22</code></td></tr>
+</table>
+
+<!-- ================= QML ================= -->
+<h2>Mã QML cốt lõi (qml/shell.qml)</h2>
+<pre class="code"><span class="c">// ---------- THE BRIDGE ----------</span>
+<span class="k">Rectangle</span> { id: bridge
+  z: 15; width: 22; height: 4; radius: 2; color: <span class="s">"#2dd4bf"</span>
+  x: railWidth - 2
+  y: bridgeY(currentTab)                      <span class="c">// = 16 + idx*58 + 22</span>
+  transform: <span class="k">Scale</span> { id: bridgeScale
+    xScale: 1.0; origin.x: 0; origin.y: 2
+    <span class="k">Behavior on xScale</span> { <span class="k">NumberAnimation</span> { duration: 320
+      easing.type: Easing.OutBack; easing.overshoot: 1.8 } }
+  }
+  <span class="k">Behavior on y</span> { <span class="k">NumberAnimation</span> { duration: 340
+    easing.type: Easing.OutBack; easing.overshoot: 1.6 } }
+}
+<span class="c">// Re-bung bridge mỗi lần đổi tab:</span>
+<span class="k">Connections</span> {
+  target: root
+  function onCurrentTabChanged() {
+    bridgeScale.xScale = 0
+    Qt.callLater(function() { bridgeScale.xScale = 1 })
+  }
+}
+
+<span class="c">// ---------- TAB ITEM (squircle + ripple) ----------</span>
+<span class="k">Item</span> { width: 48; height: 48
+  property bool active: idx === root.currentTab
+  property bool hovered: tabMouse.containsMouse
+  scale: active ? 1.06 : 1.0
+  <span class="k">Behavior on scale</span> { <span class="k">NumberAnimation</span> { duration: 300
+    easing.type: Easing.OutBack; easing.overshoot: 1.8 } }
+
+  <span class="k">Rectangle</span> { <span class="c">// nền</span>
+    anchors.fill: parent; radius: 16; clip: true
+    color: active ? <span class="s">"#2dd4bf"</span>
+         : hovered ? Qt.rgba(1,1,1,0.03) : <span class="s">"transparent"</span>
+    <span class="k">Behavior on color</span> { <span class="k">ColorAnimation</span> { duration: 220 } }
+
+    <span class="k">Rectangle</span> { id: ripple    <span class="c">// vòng tròn từ điểm chạm</span>
+      width: 64; height: 64; radius: 32; visible: false
+      color: Qt.rgba(0.18, 0.83, 0.75, 0.30); scale: 0.1; opacity: 1
+      <span class="k">ParallelAnimation</span> { id: rippleAnim
+        <span class="k">NumberAnimation</span> { property: <span class="s">"scale"</span>; from: 0.1; to: 1.6; duration: 500; easing.type: Easing.OutCubic }
+        <span class="k">NumberAnimation</span> { property: <span class="s">"opacity"</span>; from: 1; to: 0; duration: 500; easing.type: Easing.OutCubic }
+      }
+    }
+  }
+  <span class="k">Image</span> { <span class="c">// icon SVG: #4a4a5e / #8a8a9e / #052018</span>
+    source: root.svgIcon(tabModel[idx], active ? <span class="s">"#052018"</span> : hovered ? <span class="s">"#8a8a9e"</span> : <span class="s">"#4a4a5e"</span>, 20)
+  }
+  <span class="k">MouseArea</span> { id: tabMouse
+    onClicked: currentTab = idx
+    onPressed: { ripple.x = mouse.x - 32; ripple.y = mouse.y - 32
+                 ripple.visible = true; rippleAnim.restart() }
+  }
+}
+
+<span class="c">// ---------- CONTENT SLIDE (StackLayout, trang mới trượt phải->trái) ----------</span>
+<span class="k">StackLayout</span> { id: pages; currentIndex: currentTab
+  <span class="k">Item</span> {   <span class="c">// mỗi page là 1 con, bên trong mới animate transform</span>
+    transform: <span class="k">Translate</span> {
+      x: pages.currentIndex === 0 ? 0 : 60
+      <span class="k">Behavior on x</span> { <span class="k">NumberAnimation</span> { duration: 420
+        easing.type: Easing.OutBack; easing.overshoot: 1.2 } }
+    }
+    <span class="k">Rectangle</span> { anchors.fill: parent; radius: 14; gradient: <span class="s">"...gradient tối riêng..."</span> }
+  }
+}</pre>
+
+<!-- ================= GHÉP VÀO APP ================= -->
+<h2>Điều chỉnh khi ghép vào app</h2>
+<ul class="notes">
+  <li><b>Không cần GPU:</b> mẫu này không dùng blur/glass/shadow — chạy mượt trên software renderer RV1106, bỏ luôn kiểm tra <code>gpuAccelerated</code>.</li>
+  <li><b>Bridge theo tab scroll:</b> nếu list tab cuộn được, y của bridge phải tính qua <code>mapToItem</code> (xem mẫu tooltip cũ) — bản này dùng Column cố định nên dùng công thức <code>bridgeY(i)</code>.</li>
+  <li><b>Spring easing:</b> OutBack + overshoot 1.2&ndash;1.8 cho scale/y/x; CSS tương đương <code>cubic-bezier(.34,1.56,.64,1)</code>.</li>
+  <li><b>Icon SVG:</b> giữ <code>svgIcon()</code> data-URI qua QtSvg; đổi màu = đổi data-URI (Image reload, không cần repaint Canvas).</li>
+  <li><b>Ripple trên touch:</b> <code>onPressed</code> kích hoạt cả chuột lẫn cảm ứng — lấy tọa độ từ <code>mouse.x/y</code>.</li>
+</ul>
+
+<script>
+// ============ SVG icon paths (stroke) ============
+const PATHS = {
+  photo: '<rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M5.5 17.5 L9.5 9.5 L13 13 L15.5 8.5 L19 17.5"/><circle cx="18" cy="7" r="1.8"/>',
+  mic: '<path d="M9.5 4.5 h5 A2.5 2.5 0 0 1 17 7 v3 a5 5 0 0 1 -10 0 V7 A2.5 2.5 0 0 1 9.5 4.5 z"/><path d="M6.5 17.5 h11"/><path d="M12 15.5 V20.5"/>',
+  dashboard: '<circle cx="12" cy="13" r="8"/><path d="M12 4 v2.5"/><path d="M6.2 7.8 l1.8 1.8"/><path d="M17.8 7.8 l-1.8 1.8"/><path d="M12 13 L15.5 8.5"/><circle cx="12" cy="13" r="1.5"/>',
+  calendar: '<rect x="4" y="6.5" width="16" height="13.5" rx="2"/><path d="M4 10.5 h16"/><path d="M8.5 4 v3.5"/><path d="M15.5 4 v3.5"/><path d="M8 15 h8"/><path d="M8 18 h5"/>',
+  music: '<circle cx="9" cy="18.5" r="2.3"/><circle cx="15" cy="18.5" r="2.3"/><path d="M10.5 16.5 V6.5"/><path d="M16.5 16.5 V6.5"/><path d="M9.5 7 l8 -1.5"/>',
+  settings: '<path d="M16.4 12 L18.6 12 M15.11 15.11 L16.67 16.67 M12 16.4 L12 18.6 M8.89 15.11 L7.33 16.67 M7.6 12 L5.4 12 M8.89 8.89 L7.33 7.33 M12 7.6 L12 5.4 M15.11 8.89 L16.67 7.33"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.7"/>'
+};
+const TAB_NAMES = ["photo","mic","dashboard","calendar","music","settings"];
+const GRADS = [
+  "linear-gradient(180deg,#141b2e,#0b0f1e)",
+  "linear-gradient(180deg,#121a2e,#0a0f1c)",
+  "linear-gradient(180deg,#131c2a,#0c1119)",
+  "linear-gradient(180deg,#121a2b,#0b0f1a)",
+  "linear-gradient(180deg,#151c2e,#0e1220)",
+  "linear-gradient(180deg,#101826,#0a0e18)"
+];
+const B = 48, BS = 10, TOP = 16;
+const SPRING = "cubic-bezier(.34,1.56,.64,1)";
+let cur = 0;
+
+function iconSVG(name, color, size) {
+  const wrap = document.createElement("div");
+  wrap.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="' + size +
+    '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="' + color +
+    '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    PATHS[name] + '</svg>';
+  return wrap.firstChild;
+}
+
+function makeTab(name, idx, parent) {
+  const tab = document.createElement("div");
+  tab.style.cssText = "position:relative;width:48px;height:48px;border-radius:16px;cursor:pointer;background:transparent;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:transform .3s cubic-bezier(.34,1.56,.64,1), background .22s";
+  const ic = document.createElement("div");
+  ic.style.cssText = "display:flex;align-items:center;justify-content:center;pointer-events:none";
+  ic.appendChild(iconSVG(name, "#4a4a5e", 20));
+  tab.appendChild(ic);
+  tab.addEventListener("pointerdown", (e) => {
+    const r = tab.getBoundingClientRect();
+    const rip = document.createElement("div");
+    rip.style.cssText = "position:absolute;left:" + (e.clientX - r.left - 32) + "px;top:" + (e.clientY - r.top - 32) + "px;width:64px;height:64px;border-radius:50%;background:rgba(45,212,191,.30);pointer-events:none";
+    rip.style.animation = "ripple .5s ease-out forwards";
+    tab.appendChild(rip);
+    setTimeout(() => rip.remove(), 550);
+  });
+  tab.addEventListener("click", () => { cur = idx; render(); });
+  tab.addEventListener("mouseenter", () => { tab._h = true; render(); });
+  tab.addEventListener("mouseleave", () => { tab._h = false; render(); });
+  parent.appendChild(tab);
+  return tab;
+}
+
+const style = document.createElement("style");
+style.textContent = "@keyframes ripple{from{transform:scale(.1);opacity:1}to{transform:scale(1.6);opacity:0}}";
+document.head.appendChild(style);
+
+// Chiều cao stage theo tỷ lệ 800:480 - tính bằng JS để chạy trên mọi trình duyệt
+// (không dùng aspect-ratio: browser cũ không hỗ trợ -> demo cao 0px)
+function sizeStage() {
+  const f = document.getElementById("stage");
+  f.style.height = Math.round(f.clientWidth * 480 / 800) + "px";
+}
+window.addEventListener("resize", sizeStage);
+sizeStage();
+
+const tabsWrap = document.getElementById("tabs");
+TAB_NAMES.slice(0, 5).forEach((n, i) => makeTab(n, i, tabsWrap));
+const settingsEl = makeTab("settings", 5, document.getElementById("settingsTab"));
+
+const bridge = document.getElementById("bridge");
+const page = document.getElementById("page");
+
+function bridgeY(i) {
+  return i < 5 ? TOP + i * (B + BS) + B / 2 - 2 : 480 - 16 - B + B / 2 - 2;
+}
+
+function render() {
+  bridge.style.top = bridgeY(cur) + "px";
+  bridge.style.transition = "none";
+  bridge.style.transform = "scaleX(0)";
+  requestAnimationFrame(() => {
+    bridge.style.transition = "top .34s cubic-bezier(.34,1.56,.64,1), transform .32s cubic-bezier(.34,1.56,.64,1)";
+    bridge.style.transform = "scaleX(1)";
+  });
+
+  [tabsWrap, document.getElementById("settingsTab").parentNode].forEach(() => {});
+  const all = [...tabsWrap.children, settingsEl];
+  all.forEach((t) => {
+    const idx = t === settingsEl ? 5 : [...tabsWrap.children].indexOf(t);
+    const active = idx === cur;
+    t.style.background = active ? "#2dd4bf" : t._h ? "rgba(255,255,255,.03)" : "transparent";
+    t.style.transform = active ? "scale(1.06)" : "scale(1)";
+    t.firstChild.innerHTML = "";
+    t.firstChild.appendChild(iconSVG(TAB_NAMES[idx], active ? "#052018" : t._h ? "#8a8a9e" : "#4a4a5e", 20));
+  });
+
+  page.style.background = GRADS[cur];
+  page.style.transition = "none";
+  page.style.transform = "translateX(60px)";
+  requestAnimationFrame(() => {
+    page.style.transition = "transform .42s cubic-bezier(.34,1.56,.64,1)";
+    page.style.transform = "translateX(0)";
+  });
+
+  const title = TAB_NAMES[cur].charAt(0).toUpperCase() + TAB_NAMES[cur].slice(1);
+  document.getElementById("pageTitle").textContent = title;
+  document.getElementById("pageSub").textContent =
+    (cur === 0 || cur === 1) ? "tab có module thật (photoframe / voicetest)" : "tab chưa được cài đặt";
+}
+
+render();
+</script>
+</body>
+</html>

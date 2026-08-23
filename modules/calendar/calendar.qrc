@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/calendar">
+        <file>qml/CalendarTab.qml</file>
+        <file>qml/Theme.js</file>
+        <file>qml/HeaderBar.qml</file>
+        <file>qml/MonthGrid.qml</file>
+        <file>qml/DayDetailPanel.qml</file>
+        <file>qml/EdgeSwipeHandler.qml</file>
+    </qresource>
+</RCC>

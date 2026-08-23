@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/shell">
+        <file>shell.qml</file>
+        <file>components/ImageIcon.qml</file>
+        <file>components/GlassBlur.qml</file>
+        <file>components/EmptyPage.qml</file>
+        <file>components/ShellTabBar.qml</file>
+        <file>components/themes/Theme.js</file>
+    </qresource>
+</RCC>

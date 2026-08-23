@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/voicetest">
+        <file>qml/main.qml</file>
+        <file>qml/RecordButton.qml</file>
+        <file>qml/PlaybackButton.qml</file>
+        <file>qml/WaveformDisplay.qml</file>
+        <file>qml/VolumeSlider.qml</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/dashboard">
+        <file>qml/DashboardTab.qml</file>
+        <file>qml/Gauge.qml</file>
+        <file>qml/AreaChart.qml</file>
+        <file>qml/StatItem.qml</file>
+    </qresource>
+</RCC>

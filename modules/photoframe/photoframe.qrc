@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/photoframe">
+        <file>qml/Main.qml</file>
+        <file>qml/components/AnalogClock.qml</file>
+        <file>qml/components/CrossFadeImage.qml</file>
+        <file>qml/components/ClockWidget.qml</file>
+        <file>qml/components/InfoBar.qml</file>
+        <file>qml/components/PlayPauseButton.qml</file>
+        <file>qml/components/SettingsPanel.qml</file>
+        <file>qml/components/SegmentedControl.qml</file>
+        <file>qml/components/ToggleSwitch.qml</file>
+    </qresource>
+</RCC>

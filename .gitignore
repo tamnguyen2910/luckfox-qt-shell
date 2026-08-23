@@ -1,0 +1,23 @@
+# Build artifacts
+*.o
+*.moc
+*.so
+*.a
+
+# QMake/Generated files
+moc_*.cpp
+qrc_*.cpp
+*.stash
+
+# Compiled binaries
+luckfox-shell
+
+# Build directories
+build/
+build_host/
+
+# IDE files
+*.swp
+*.swo
+*~
+.DS_Store
