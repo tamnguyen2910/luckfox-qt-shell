@@ -103,7 +103,7 @@ Item {
                     ctx.beginPath()
                     ctx.moveTo(cx + r1 * Math.cos(ang), cy + r1 * Math.sin(ang))
                     ctx.lineTo(cx + r2 * Math.cos(ang), cy + r2 * Math.sin(ang))
-                    ctx.strokeStyle = (t === 4 && prog > 0.95) ? rootG.dk ? "#ef4444" : rootG.tL.red : rootG.dk ? "#2c3752" : rootG.tD.gaugeTick
+                    ctx.strokeStyle = (t === 4 && prog > 0.95) ? rootG.dk ? "#ef4444" : rootG.tL.red : rootG.dk ? "#2c3752" : rootG.tL.gaugeTick
                     ctx.lineWidth = t % 2 === 0 ? 2 : 1.5
                     ctx.stroke()
                 }
@@ -133,7 +133,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             text: rootG.value.toFixed(rootG.decimals)
             font.pixelSize: Math.max(11, rootG.valueSize)
-            font.family: "DejaVu Sans Mono"
+            font.family: T.fontMono
             font.bold: true
             color: dk ? "#e4e8f0" : "#253240"
         }
@@ -142,7 +142,7 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             text: rootG.unit
             font.pixelSize: Math.max(8, rootG.unitSize)
-            font.family: "DejaVu Sans Mono"
+            font.family: T.fontMono
             color: dk ? "#8a90a2" : "#5a6579"
         }
     }
@@ -152,7 +152,7 @@ Item {
         id: tMin
         text: rootG.minValue.toFixed(0)
         font.pixelSize: Math.max(7, rootG.width * 0.075)
-        font.family: "DejaVu Sans Mono"
+        font.family: T.fontMono
         color: rootG.dk ? "#8a90a2" : "#5a6579"
         x: rootG.width / 2 - rootG.radius() * 0.707 - tMin.contentWidth / 2 - 2
         y: rootG.height / 2 + rootG.radius() * 0.707 - tMin.contentHeight / 2 - 2
@@ -161,7 +161,7 @@ Item {
         id: tMax
         text: rootG.maxValue.toFixed(0)
         font.pixelSize: Math.max(7, rootG.width * 0.075)
-        font.family: "DejaVu Sans Mono"
+        font.family: T.fontMono
         color: rootG.dk ? "#8a90a2" : "#5a6579"
         x: rootG.width / 2 + rootG.radius() * 0.707 - tMax.contentWidth / 2 + 2
         y: rootG.height / 2 + rootG.radius() * 0.707 - tMax.contentHeight / 2 - 2

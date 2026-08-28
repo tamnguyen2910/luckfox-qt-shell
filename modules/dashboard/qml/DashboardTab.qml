@@ -128,11 +128,11 @@ Item {
                     }
                     Gauge {
                         id: gaugeRam
-                        x: 10; y: 24; width: 130; height: 130
+                        x: 25; y: 24; width: 130; height: 130
                         value: sysInfo ? sysInfo.ramPercent : 0
                         maxValue: 100; unit: "%"; arcColor: blueC; lineWidth: 8
                     }
-                    Column { x: 152; y: 28; spacing: 5
+                    Column { x: 170; y: 28; spacing: 5
                         StatItem { label: "USED"; value: (sysInfo ? sysInfo.ramUsed.toFixed(0) : "0") + " MB"; valueSize: 13 }
                         StatItem { label: "TOTAL"; value: (sysInfo ? sysInfo.ramTotal.toFixed(0) : "0") + " MB"; valueColor: blueC; valueSize: 13 }
                         StatItem { label: "FREE"; value: (sysInfo ? (sysInfo.ramTotal - sysInfo.ramUsed).toFixed(0) : "0") + " MB"; valueColor: blueC; valueSize: 13 }
@@ -146,15 +146,15 @@ Item {
                     Rectangle { width: 3; height: 176; radius: 2; color: amberC }
                     Row { x: 10; y: 6; spacing: 5
                         Rectangle { width: 6; height: 6; radius: 3; anchors.verticalCenter: parent.verticalCenter; color: amberC }
-                        Text { text: "STORAGE"; font.pixelSize: 10; font.family: "DejaVu Sans"; font.bold: true; color: textPri }
+                        Text { text: "STORAGE"; font.pixelSize: T.sizes.tertiary; font.family: T.font; font.bold: true; color: textPri }
                     }
                     Gauge {
                         id: gaugeStor
-                        x: 10; y: 24; width: 130; height: 130
+                        x: 25; y: 24; width: 130; height: 130
                         value: sysInfo ? sysInfo.storagePercent : 0
                         maxValue: 100; unit: "%"; arcColor: amberC; lineWidth: 8
                     }
-                    Column { x: 152; y: 28; spacing: 5
+                    Column { x: 170; y: 28; spacing: 5
                         StatItem { label: "USED"; value: (sysInfo ? sysInfo.storageUsed.toFixed(0) : "0") + " MB"; valueSize: 13 }
                         StatItem { label: "TOTAL"; value: (sysInfo ? sysInfo.storageTotal.toFixed(0) : "0") + " MB"; valueColor: amberC; valueSize: 13 }
                         StatItem { label: "FREE"; value: (sysInfo ? (sysInfo.storageTotal - sysInfo.storageUsed).toFixed(0) : "0") + " MB"; valueColor: amberC; valueSize: 13 }
@@ -168,15 +168,15 @@ Item {
                     Rectangle { width: 3; height: 176; radius: 2; color: greenC }
                     Row { x: 10; y: 6; spacing: 5
                         Rectangle { width: 6; height: 6; radius: 3; anchors.verticalCenter: parent.verticalCenter; color: greenC }
-                        Text { text: "CPU"; font.pixelSize: 10; font.family: "DejaVu Sans"; font.bold: true; color: textPri }
+                        Text { text: "CPU"; font.pixelSize: T.sizes.tertiary; font.family: T.font; font.bold: true; color: textPri }
                     }
                     Gauge {
                         id: gaugeCpu
-                        x: 10; y: 24; width: 130; height: 130
+                        x: 25; y: 24; width: 130; height: 130
                         value: sysInfo ? sysInfo.cpuUsage : 0
                         maxValue: 100; unit: "%"; arcColor: greenC; lineWidth: 8
                     }
-                    Column { x: 152; y: 28; spacing: 5
+                    Column { x: 170; y: 28; spacing: 5
                         StatItem { label: "FREQUENCY"; value: (sysInfo ? sysInfo.cpuFreq.toFixed(0) : "0") + " MHz"; valueSize: 13 }
                         StatItem { label: "LOAD"; value: (sysInfo ? sysInfo.cpuUsage.toFixed(1) : "0") + " %"; valueColor: greenC; valueSize: 13 }
                         StatItem { label: "BOARD TEMP"
@@ -196,32 +196,31 @@ Item {
                     Row { x: 10; y: 6; spacing: 5
                         Rectangle { width: 6; height: 6; radius: 3; anchors.verticalCenter: parent.verticalCenter
                             color: sysInfo && sysInfo.sensorAvailable ? greenC : redC }
-                        Text { text: "AHT30 SENSOR"; font.pixelSize: 10; font.family: "DejaVu Sans"; font.bold: true; color: textPri }
+                        Text { text: "AHT30 SENSOR"; font.pixelSize: T.sizes.tertiary; font.family: T.font; font.bold: true; color: textPri }
                     }
                     Text { anchors.right: parent.right; anchors.rightMargin: 10; y: 6
                         text: sysInfo && sysInfo.sensorAvailable ? "ONLINE" : "OFFLINE"
-                        font.pixelSize: 8; font.family: "DejaVu Sans Mono"; font.bold: true
+                        font.pixelSize: T.sizes.micro; font.family: T.fontMono; font.bold: true
                         color: sysInfo && sysInfo.sensorAvailable ? greenC : redC }
-                    Gauge {
-                        id: gTmpMini
-                        x: 8; y: 22; width: 130; height: 130
-                        value: sysInfo && sysInfo.sensorAvailable ? sysInfo.temperature : 0
-                        maxValue: 60; unit: "°C"; arcColor: redC; lineWidth: 8; showTicks: false
-                        opacity: sysInfo && sysInfo.sensorAvailable ? 1 : 0.35
+                    Row {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: 24
+                        spacing: 10
+                        Gauge {
+                            id: gTmpMini
+                            width: 130; height: 130
+                            value: sysInfo && sysInfo.sensorAvailable ? sysInfo.temperature : 0
+                            maxValue: 60; unit: "°C"; arcColor: redC; lineWidth: 8
+                            opacity: sysInfo && sysInfo.sensorAvailable ? 1 : 0.35
+                        }
+                        Gauge {
+                            id: gHumMini
+                            width: 130; height: 130
+                            value: sysInfo && sysInfo.sensorAvailable ? sysInfo.humidity : 0
+                            maxValue: 100; unit: "%"; arcColor: cyanC; lineWidth: 8
+                            opacity: sysInfo && sysInfo.sensorAvailable ? 1 : 0.35
+                        }
                     }
-                    Gauge {
-                        id: gHumMini
-                        x: 148; y: 22; width: 130; height: 130
-                        value: sysInfo && sysInfo.sensorAvailable ? sysInfo.humidity : 0
-                        maxValue: 100; unit: "%"; arcColor: cyanC; lineWidth: 8; showTicks: false
-                        opacity: sysInfo && sysInfo.sensorAvailable ? 1 : 0.35
-                    }
-                    Text { anchors.horizontalCenter: parent.horizontalCenter; y: 156
-                        text: sysInfo && sysInfo.sensorAvailable
-                              ? sysInfo.temperature.toFixed(1) + "°C   ·   " + sysInfo.humidity.toFixed(1) + "%"
-                              : "SENSOR NOT DETECTED"
-                        font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true
-                        color: sysInfo && sysInfo.sensorAvailable ? textPri : redC }
                     MouseArea { anchors.fill: parent; onClicked: rootD.dashTab = 1 }
                 }
             }
@@ -238,7 +237,7 @@ Item {
                     border { width: 1; color: cardBorder }
                     Row { x: 12; y: 8; spacing: 5
                         Rectangle { width: 7; height: 7; radius: 3.5; anchors.verticalCenter: parent.verticalCenter; color: redC }
-                        Text { text: "TEMPERATURE"; font.pixelSize: 11; font.family: "DejaVu Sans"; font.bold: true; color: redC }
+                        Text { text: "TEMPERATURE"; font.pixelSize: T.sizes.secondary; font.family: T.font; font.bold: true; color: redC }
                     }
                     Gauge {
                         id: gaugeTemp
@@ -267,7 +266,7 @@ Item {
                     border { width: 1; color: cardBorder }
                     Row { x: 12; y: 8; spacing: 5
                         Rectangle { width: 7; height: 7; radius: 3.5; anchors.verticalCenter: parent.verticalCenter; color: cyanC }
-                        Text { text: "HUMIDITY"; font.pixelSize: 11; font.family: "DejaVu Sans"; font.bold: true; color: cyanC }
+                        Text { text: "HUMIDITY"; font.pixelSize: T.sizes.secondary; font.family: T.font; font.bold: true; color: cyanC }
                     }
                     Gauge {
                         id: gaugeHum
@@ -303,7 +302,7 @@ Item {
                     Row { x: 12; y: 8; spacing: 5
                         Rectangle { width: 7; height: 7; radius: 3.5; anchors.verticalCenter: parent.verticalCenter; color: greenC }
                         Text { text: "CPU USAGE — 60 SECOND HISTORY"
-                            font.pixelSize: 11; font.family: "DejaVu Sans Mono"; font.bold: true; color: greenC }
+                            font.pixelSize: T.sizes.secondary; font.family: T.fontMono; font.bold: true; color: greenC }
                     }
                     AreaChart {
                         id: cpuChart
@@ -325,9 +324,9 @@ Item {
                         Rectangle {
                             width: 164; height: 60; radius: 6; color: cardC
                             border { width: 1; color: cardBorder }
-                            Text { x: 10; y: 6; text: modelData.label; font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true; color: textSec }
-                            Text { x: 10; y: 26; text: modelData.val; font.pixelSize: 17; font.family: "DejaVu Sans Mono"; font.bold: true; color: modelData.col }
-                            Text { x: 96; y: 32; text: modelData.unit; font.pixelSize: 9; font.family: "DejaVu Sans"; color: textSec }
+                            Text { x: 10; y: 6; text: modelData.label; font.pixelSize: T.sizes.dataMicro; font.family: T.fontMono; font.bold: true; color: textSec }
+                            Text { x: 10; y: 26; text: modelData.val; font.pixelSize: 17; font.family: T.fontMono; font.bold: true; color: modelData.col }
+                            Text { x: 96; y: 32; text: modelData.unit; font.pixelSize: T.sizes.dataMicro; font.family: T.font; color: textSec }
                         }
                     }
                 }
@@ -344,54 +343,54 @@ Item {
                     width: 221; height: 130; radius: 8; color: cardC
                     border { width: 1; color: cardBorder }
                     Rectangle { width: 3; height: 130; radius: 2; color: blueC }
-                    Text { x: 14; y: 10; text: "INTERFACE"; font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true; color: textSec }
+                    Text { x: 14; y: 10; text: "INTERFACE"; font.pixelSize: T.sizes.dataMicro; font.family: T.fontMono; font.bold: true; color: textSec }
                     Text { x: 14; y: 42; text: sysInfo ? sysInfo.ifaceName : "wlan0"
-                        font.pixelSize: 22; font.family: "DejaVu Sans Mono"; font.bold: true; color: textPri }
+                        font.pixelSize: 22; font.family: T.fontMono; font.bold: true; color: textPri }
                 }
                 Rectangle {
                     width: 221; height: 130; radius: 8; color: cardC
                     border { width: 1; color: cardBorder }
                     Rectangle { width: 3; height: 130; radius: 2; color: blueC }
-                    Text { x: 14; y: 10; text: "IP ADDRESS"; font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true; color: textSec }
+                    Text { x: 14; y: 10; text: "IP ADDRESS"; font.pixelSize: T.sizes.dataMicro; font.family: T.fontMono; font.bold: true; color: textSec }
                     Text { x: 14; y: 44; text: sysInfo ? sysInfo.ipAddress : "0.0.0.0"
-                        font.pixelSize: 20; font.family: "DejaVu Sans Mono"; font.bold: true; color: textPri }
+                        font.pixelSize: 20; font.family: T.fontMono; font.bold: true; color: textPri }
                 }
                 Rectangle {
                     width: 221; height: 130; radius: 8; color: cardC
                     border { width: 1; color: cardBorder }
                     Rectangle { width: 3; height: 130; radius: 2
                         color: sysInfo && sysInfo.wifiSSID !== "Not connected" ? greenC : redC }
-                    Text { x: 14; y: 10; text: "WIFI STATUS"; font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true; color: textSec }
+                    Text { x: 14; y: 10; text: "WIFI STATUS"; font.pixelSize: T.sizes.dataMicro; font.family: T.fontMono; font.bold: true; color: textSec }
                     Row { x: 14; y: 38; spacing: 7
                         Rectangle { width: 9; height: 9; radius: 4.5; anchors.verticalCenter: parent.verticalCenter
                             color: sysInfo && sysInfo.wifiSSID !== "Not connected" ? greenC : redC }
                         Text { text: sysInfo && sysInfo.wifiSSID !== "Not connected" ? "CONNECTED" : "OFFLINE"
-                            font.pixelSize: 14; font.family: "DejaVu Sans Mono"; font.bold: true
+                            font.pixelSize: 14; font.family: T.fontMono; font.bold: true
                             color: sysInfo && sysInfo.wifiSSID !== "Not connected" ? greenC : redC }
                     }
                     Text { x: 14; y: 66; text: sysInfo ? sysInfo.wifiSSID : "Not connected"
-                        font.pixelSize: 12; font.family: "DejaVu Sans Mono"; font.bold: true; color: textPri }
+                        font.pixelSize: T.sizes.dataSmall; font.family: T.fontMono; font.bold: true; color: textPri }
                     Text { x: 14; y: 88; text: sysInfo && sysInfo.linkSpeed > 0 ? sysInfo.linkSpeed + " Mb/s" : "—"
-                        font.pixelSize: 10; font.family: "DejaVu Sans Mono"; color: textSec }
+                        font.pixelSize: T.sizes.tertiary; font.family: T.fontMono; color: textSec }
                 }
 
                 Rectangle {
                     width: 221; height: 92; radius: 8; color: cardC
                     border { width: 1; color: cardBorder }
                     Rectangle { width: 3; height: 92; radius: 2; color: accent }
-                    Text { x: 14; y: 10; text: "TIME (UTC+7)"; font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true; color: textSec }
+                    Text { x: 14; y: 10; text: "TIME (UTC+7)"; font.pixelSize: T.sizes.dataMicro; font.family: T.fontMono; font.bold: true; color: textSec }
                     Text { x: 14; y: 40; text: sysInfo ? sysInfo.currentTime : "00:00:00"
-                        font.pixelSize: 21; font.family: "DejaVu Sans Mono"; font.bold: true; color: greenC }
+                        font.pixelSize: 21; font.family: T.fontMono; font.bold: true; color: greenC }
                 }
                 Rectangle {
                     width: 449; height: 92; radius: 8; color: cardC
                     border { width: 1; color: cardBorder }
                     Rectangle { width: 3; height: 92; radius: 2; color: accent }
-                    Text { x: 14; y: 10; text: "DEVICE"; font.pixelSize: 9; font.family: "DejaVu Sans Mono"; font.bold: true; color: textSec }
+                    Text { x: 14; y: 10; text: "DEVICE"; font.pixelSize: T.sizes.dataMicro; font.family: T.fontMono; font.bold: true; color: textSec }
                     Row { x: 14; y: 42; spacing: 32
-                        Text { text: "Luckfox Pico Ultra W"; font.pixelSize: 13; font.family: "DejaVu Sans Mono"; font.bold: true; color: textPri }
-                        Text { text: "RV1106 SoC"; font.pixelSize: 13; font.family: "DejaVu Sans Mono"; font.bold: true; color: textPri }
-                        Text { text: "Linux 6.1"; font.pixelSize: 13; font.family: "DejaVu Sans Mono"; font.bold: true; color: textPri }
+                        Text { text: "Luckfox Pico Ultra W"; font.pixelSize: 13; font.family: T.fontMono; font.bold: true; color: textPri }
+                        Text { text: "RV1106 SoC"; font.pixelSize: 13; font.family: T.fontMono; font.bold: true; color: textPri }
+                        Text { text: "Linux 6.1"; font.pixelSize: 13; font.family: T.fontMono; font.bold: true; color: textPri }
                     }
                 }
             }

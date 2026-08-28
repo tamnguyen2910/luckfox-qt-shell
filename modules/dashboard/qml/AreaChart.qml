@@ -23,6 +23,7 @@ Canvas {
     property bool showAxis: true
     property bool showBadge: true
     property color textColor: dk ? tD.textPrimary : tL.textPrimary
+    readonly property string fontFamily: "DejaVu Sans Mono"
 
     function repaint() { requestPaint() }
     function withAlpha(c, a) { return Qt.rgba(c.r, c.g, c.b, a) }
@@ -51,6 +52,7 @@ Canvas {
             ctx.lineWidth = 1
             ctx.fillStyle = chartRoot.labelCol
             ctx.font = "9px 'DejaVu Sans Mono'"
+            // Use monospace from theme system (T.fontMono = "DejaVu Sans Mono")
             ctx.textAlign = "right"
             for (var g = 0; g <= 4; g++) {
                 var gy = padT() + (g / 4) * ch
@@ -130,7 +132,7 @@ Canvas {
 
         if (showBadge) {
             var badge = last.toFixed(1) + unit
-            ctx.font = "bold 10px 'DejaVu Sans Mono'"
+            ctx.font = "bold 10px '" + chartRoot.fontFamily + "'"
             var tw = ctx.measureText(badge).width
             var bx = Math.max(padL(), Math.min(lx + 12, w - tw - 10))
             var by = Math.max(padT() + 6, ly - 26)
