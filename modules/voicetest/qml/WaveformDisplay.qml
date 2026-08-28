@@ -84,7 +84,7 @@ Item {
                  : "Waveform"
             font.pixelSize: 12
             font.bold: true
-            font.family: "DejaVu Sans"
+            font.family: T.font
             color: waveform.recording ? waveform.pal.error : waveform.playing ? waveform.pal.accent : waveform.pal.textDim
         }
 
@@ -101,7 +101,7 @@ Item {
                 return mins + ":" + (secs < 10 ? "0" : "") + secs
             }
             font.pixelSize: 12
-            font.family: "DejaVu Sans"
+            font.family: T.font
             color: waveform.pal.duration
         }
     }

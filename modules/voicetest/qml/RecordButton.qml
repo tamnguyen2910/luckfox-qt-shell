@@ -13,6 +13,7 @@ Button {
     width: 150
     height: 150
     flat: true
+    background: Item {}
 
     contentItem: Item {
         id: c
@@ -80,7 +81,7 @@ Button {
             text: recordBtn.customText
             font.pixelSize: 15
             font.bold: true
-            font.family: "DejaVu Sans"
+            font.family: T.font
             color: recordBtn.customColor
         }
 

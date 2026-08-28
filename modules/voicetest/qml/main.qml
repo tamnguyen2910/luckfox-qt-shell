@@ -35,7 +35,7 @@ Item {
                 text: "RECORDER"
                 font.pixelSize: 20
                 font.bold: true
-                font.family: "DejaVu Sans"
+                font.family: T.font
                 font.letterSpacing: 2.0
                 color: root.pal.accent
                 anchors.verticalCenter: parent.verticalCenter
@@ -48,21 +48,21 @@ Item {
             Text {
                 text: "Status: " + deviceManager.status
                 font.pixelSize: 12
-                font.family: "DejaVu Sans"
+                font.family: T.font
                 color: root.pal.textDim
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
                 text: "Pin: " + (deviceManager.batteryLevel >= 0 ? deviceManager.batteryLevel + "%" : "N/A")
                 font.pixelSize: 12
-                font.family: "DejaVu Sans"
+                font.family: T.font
                 color: root.pal.textDim
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
                 text: deviceManager.storageInfo
                 font.pixelSize: 12
-                font.family: "DejaVu Sans"
+                font.family: T.font
                 color: root.pal.textMute
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -121,7 +121,7 @@ Item {
             Layout.fillWidth: true
             text: "Sẵn sàng ghi âm"
             font.pixelSize: 13
-            font.family: "DejaVu Sans"
+            font.family: T.font
             color: root.pal.textDim
             horizontalAlignment: Text.AlignHCenter
         }

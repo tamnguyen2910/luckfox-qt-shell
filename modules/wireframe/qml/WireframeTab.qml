@@ -31,7 +31,7 @@ Item {
         anchors.leftMargin: 16
         anchors.topMargin: 10
         text: "Luckfox 3D Wireframe"
-        font.family: "DejaVu Sans"
+        font.family: T.font
         font.pixelSize: 18
         font.bold: true
         color: rootWf.pal.title
@@ -44,7 +44,7 @@ Item {
         anchors.leftMargin: 16
         anchors.bottomMargin: 8
         text: "Pyramid + Cylinder + Cube | t=%1s".arg(rootWf.t.toFixed(1))
-        font.family: "DejaVu Sans"
+        font.family: T.font
         font.pixelSize: 11
         color: rootWf.pal.status
     }
