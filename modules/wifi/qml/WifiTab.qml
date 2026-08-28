@@ -62,7 +62,7 @@ Item {
     /* ───────────────── HEADER ───────────────── */
     Rectangle {
         id: header
-        anchors.top: parent.top; width: parent.width; height: 64
+        anchors.top: parent.top; width: parent.width; height: 48
         color: theme.overlay; z: 20
 
         // slim accent signature line
@@ -454,9 +454,9 @@ Item {
 
         Rectangle {
             id: dlg
-            anchors.centerIn: parent; width: 560
+            anchors.centerIn: parent; width: 540
             height: contentCol.implicitHeight + 36
-            radius: theme.rXl
+            radius: theme.rLg
             color: theme.overlay; border.color: theme.borderHi; border.width: 1
             opacity: 0; scale: 0.96
 
@@ -594,16 +594,16 @@ Item {
 
                 Rectangle { Layout.fillWidth: true; height: 1; color: theme.border }
 
-                // keyboard — 42x40 keys, 11 columns
+                // keyboard — 40x32 keys, 11 columns
                 Grid {
                     Layout.alignment: Qt.AlignHCenter
-                    columns: 11; columnSpacing: 5; rowSpacing: 5
+                    columns: 11; columnSpacing: 4; rowSpacing: 4
 
                     Repeater { model: ["1","2","3","4","5","6","7","8","9","0","⌫"]
                         delegate: Rectangle {
                             property string txt: modelData
                             property bool isBksp: modelData === "⌫"
-                            width: 42; height: 40; radius: theme.rSm
+                            width: 40; height: 32; radius: theme.rSm
                             color: kbMa1.pressed ? theme.surface : (isBksp ? theme.surface3 : theme.surface2)
                             border.color: theme.border; border.width: 1
                             Text { anchors.centerIn: parent; text: txt; color: theme.text1
@@ -615,7 +615,7 @@ Item {
                     Repeater { model: ["q","w","e","r","t","y","u","i","o","p","-"]
                         delegate: Rectangle {
                             property string txt: modelData
-                            width: 42; height: 40; radius: theme.rSm
+                            width: 40; height: 32; radius: theme.rSm
                             color: kbMa2.pressed ? theme.surface3 : theme.surface2
                             border.color: theme.border; border.width: 1
                             Text { anchors.centerIn: parent; text: txt; color: theme.text1; font.pixelSize: 14; font.bold: true; font.family: theme.fontFamily }
@@ -626,7 +626,7 @@ Item {
                         delegate: Rectangle {
                             property string txt: modelData
                             property bool isShift: modelData === "⇧"
-                            width: 42; height: 40; radius: theme.rSm
+                            width: 40; height: 32; radius: theme.rSm
                             color: isShift && passwordDialog.shiftActive ? theme.accent : (kbMa3.pressed ? theme.surface3 : theme.surface2)
                             border.color: isShift && passwordDialog.shiftActive ? theme.accent : theme.border; border.width: 1
                             Text { anchors.centerIn: parent; text: txt
@@ -639,7 +639,7 @@ Item {
                     Repeater { model: ["z","x","c","v","b","n","m",".","_","!","?"]
                         delegate: Rectangle {
                             property string txt: modelData
-                            width: 42; height: 40; radius: theme.rSm
+                            width: 40; height: 32; radius: theme.rSm
                             color: kbMa4.pressed ? theme.surface3 : theme.surface2
                             border.color: theme.border; border.width: 1
                             Text { anchors.centerIn: parent; text: txt; color: theme.text1; font.pixelSize: 14; font.bold: true; font.family: theme.fontFamily }
@@ -651,34 +651,34 @@ Item {
                 // actions
                 RowLayout { Layout.alignment: Qt.AlignHCenter; spacing: 8
                     Rectangle {
-                        width: 92; height: 40; radius: theme.rSm
+                        width: 84; height: 32; radius: theme.rSm
                         color: clrMa.pressed ? theme.surface3 : "transparent"
                         border.color: theme.border; border.width: 1
-                        Text { anchors.centerIn: parent; text: "CLEAR"; color: theme.text2; font.pixelSize: 12; font.bold: true; font.family: theme.fontFamily }
+                        Text { anchors.centerIn: parent; text: "CLEAR"; color: theme.text2; font.pixelSize: 11; font.bold: true; font.family: theme.fontFamily }
                         MouseArea { id: clrMa; anchors.fill: parent; onClicked: passwordDialog.keyPress("CLR") }
                     }
                     Rectangle {
-                        width: 68; height: 40; radius: theme.rSm
+                        width: 60; height: 32; radius: theme.rSm
                         color: spMa.pressed ? theme.surface3 : "transparent"
                         border.color: theme.border; border.width: 1
-                        Text { anchors.centerIn: parent; text: "Space"; color: theme.text2; font.pixelSize: 12; font.bold: true; font.family: theme.fontFamily }
+                        Text { anchors.centerIn: parent; text: "Space"; color: theme.text2; font.pixelSize: 11; font.bold: true; font.family: theme.fontFamily }
                         MouseArea { id: spMa; anchors.fill: parent; onClicked: passwordDialog.keyPress(" ") }
                     }
                     Rectangle {
-                        width: 138; height: 40; radius: theme.rSm
+                        width: 120; height: 32; radius: theme.rSm
                         color: passwordDialog.input.length >= 8 ? (okMa.pressed ? theme.accentDk : theme.accent) : theme.surface2
                         border.color: passwordDialog.input.length >= 8 ? theme.accent : theme.border; border.width: 1
                         Text { anchors.centerIn: parent; text: "CONNECT"
                             color: passwordDialog.input.length >= 8 ? theme.ink : theme.textDim
-                            font.pixelSize: 12; font.bold: true; font.family: theme.fontFamily }
+                            font.pixelSize: 11; font.bold: true; font.family: theme.fontFamily }
                         MouseArea { id: okMa; anchors.fill: parent; enabled: passwordDialog.input.length >= 8
                             onClicked: { wifiManager.connectToNetwork(passwordDialog.ssid, passwordDialog.input); passwordDialog.hide() } }
                     }
                     Rectangle {
-                        width: 92; height: 40; radius: theme.rSm
+                        width: 84; height: 32; radius: theme.rSm
                         color: cxMa.pressed ? theme.redSoft : "transparent"
                         border.color: theme.red; border.width: 1
-                        Text { anchors.centerIn: parent; text: "CANCEL"; color: theme.red; font.pixelSize: 12; font.bold: true; font.family: theme.fontFamily }
+                        Text { anchors.centerIn: parent; text: "CANCEL"; color: theme.red; font.pixelSize: 11; font.bold: true; font.family: theme.fontFamily }
                         MouseArea { id: cxMa; anchors.fill: parent; onClicked: passwordDialog.hide() }
                     }
                 }

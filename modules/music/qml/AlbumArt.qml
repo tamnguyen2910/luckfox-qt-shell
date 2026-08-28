@@ -87,7 +87,7 @@ Item {
         // Pause ring overlay while paused/stopped
         Rectangle {
             anchors.fill: parent
-            color: root.dk ? root.tD.textDisabled : root.tL.textDisabled
+            color: root.dk ? root.tD.textFaint : root.tL.textFaint
             radius: width / 2
             opacity: (audioPlayer.isPlaying) ? 0 : 0.28
             Behavior on opacity { NumberAnimation { duration: 200 } }
@@ -96,7 +96,7 @@ Item {
                 text: audioPlayer.isPaused ? "II" : ""
                 font.pixelSize: 24
                 font.bold: true
-                color: root.dk ? root.tD.textPrimary : root.tL.textPrimary
+                color: root.dk ? root.tD.text : root.tL.text
             }
         }
 

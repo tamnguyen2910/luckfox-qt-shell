@@ -19,7 +19,7 @@ QtObject {
     // Hairline borders
     readonly property color border:       dark ? "#242C37" : "#DEE1E6"
     readonly property color borderHi:     dark ? "#333D4B" : "#C8CDD4"
-    readonly property color borderAccent: dark ? "#0E7490" : "#0E7490"
+    readonly property color borderAccent: dark ? "#00C0A6" : "#00B8A0"
 
     // Text — 4-step hierarchy
     readonly property color text1:   dark ? "#E9EBEE" : "#191C20"
@@ -27,11 +27,11 @@ QtObject {
     readonly property color text3:   dark ? "#6E7883" : "#6B7280"
     readonly property color textDim: dark ? "#49525D" : "#9AA1A9"
 
-    // Accent — cyan
-    readonly property color accent:     dark ? "#06B6D4" : "#0891B2"
-    readonly property color accentHi:   dark ? "#67E8F9" : "#0E7490"
-    readonly property color accentDk:   dark ? "#0891B2" : "#155E75"
-    readonly property color accentSoft: dark ? "#0D2730" : "#D9F1F6"
+    // Accent — teal (matches shell brand #00e5c3)
+    readonly property color accent:     dark ? "#00E5C3" : "#00B8A0"
+    readonly property color accentHi:   dark ? "#33FFE0" : "#00D3B6"
+    readonly property color accentDk:   dark ? "#00C0A6" : "#00957F"
+    readonly property color accentSoft: dark ? "#0D2A26" : "#D9F1F6"
 
     // Ink — pure white marks that stay white in both modes
     readonly property color ink: "#FFFFFF"
