@@ -21,9 +21,136 @@ A Qt5/QML automotive infotainment shell for the **Luckfox Pico Ultra W** (Rockch
 
 - **Board**: Luckfox Pico Ultra W
 - **SoC**: Rockchip RV1106 (ARM Cortex-A7)
-- **Display**: 800×480 RGB LCD (framebuffer `/dev/fb0`)
+- **Display**: 800×480 RGB666 LCD, GT911 capacitive touch (I2C3)
 - **Audio**: ALSA (`/dev/snd/...`)
 - **Storage**: SD card at `/media/music`, recordings at `/tmp`
+- **Sensors**: AHT30 temperature/humidity (I2C2 @ 0x38), potentiometer VR1 (SARADC ch1)
+- **Connectivity**: SDIO WiFi (wpa_supplicant / wpa_cli)
+- **Other**: EC11 rotary encoder, USB (peripheral), MIPI CSI camera, BT (UART1)
+
+The framebuffer is `/dev/fb0`. The touch device is `/dev/input/eventN` (resolved by Qt).
+
+---
+
+## System-level work (kernel + drivers + buildroot)
+
+This shell app is only the top of a much larger integration. The lower layers live in a separate Luckfox SDK tree and were modified by hand. They are **not** in this repository — the changes live in the buildroot kernel sources and config files, not in the Qt project. If you rebuild the system from scratch, you need to:
+
+### 1. AHT30 I²C humidity/temperature sensor
+
+A custom kernel driver was added (no upstream IIO support for this board at the time).
+
+**Files modified (under `sysdrv/` of the Luckfox SDK):**
+
+- `source/kernel/drivers/iio/humidity/aht30.c` — new I²C client driver
+  - Compatible: `aosong,aht30`
+  - I²C address `0x38`
+  - Commands: `0xBE` init / `0xAC` measure / `0xBA` reset
+  - Exposes temp + humidity via `hwmon` sysfs (e.g. `/sys/class/hwmon/hwmonX/name == "aht30"`)
+  - 100 kHz I²C bus, 80 ms measurement delay, 20 ms reset delay
+- `source/kernel/drivers/iio/humidity/Kconfig` — added `CONFIG_SENSORS_AHT30`
+- `source/kernel/drivers/iio/humidity/Makefile` — added the object
+
+**Device tree:** `arch/arm/boot/dts/rv1106g-luckfox-pico-ultra-w.dts`
+
+```dts
+&i2c2 {
+    status = "okay";
+    clock-frequency = <100000>;
+
+    aht30@38 {
+        compatible = "aosong,aht30";
+        reg = <0x38>;
+    };
+};
+```
+
+**Kernel config (`config/kernel_defconfig`):**
+
+```
+CONFIG_SENSORS_AHT30=y
+```
+
+**Verify on board after flashing:**
+
+```bash
+modprobe aht30                          # or it's built-in
+ls /sys/class/hwmon/                    # look for aht30
+cat /sys/class/hwmon/hwmonX/temp1_input # millidegrees C
+cat /sys/class/hwmon/hwmonX/humidity1_input  # millipercent
+```
+
+**App-side consumption:** the Dashboard's AHT30 zone reads from a `SensorWorker` (`src/SensorWorker/`) which polls these sysfs files; the QML `DashboardTab.qml` binds to the worker properties.
+
+A second, separate AHT30 helper exists for the optional MQTT path:
+
+- `package/aht30-mqtt/aht30-mqtt.c` — standalone userspace binary that publishes to MQTT
+- `package/aht30-mqtt/aht30-mqtt.mk` — buildroot recipe (the `aht30-mqtt` recipe in `package/Config.in`)
+
+### 2. Display (800×480 RGB666 LCD) + touch (GT911)
+
+The default `rv1106-luckfox-pico-ultra-ipc.dtsi` ships with the RGB route **disabled** (headless IPC). To get the LCD working:
+
+**Device tree (`rv1106g-luckfox-pico-ultra-w.dts`):**
+
+```dts
+/* LCD display route (ENABLE — was disabled in ultra-ipc.dtsi) */
+&route_rgb {
+    status = "okay";
+};
+```
+
+**Touch:** GT911 on I2C3 (SCL2_M0 / SDA2_M0 in the schematic). Enabled by the `goodix,gt9xx` node in the DTS — it is **not** in the IPC dtsi, so we had to add it. The touch node is consumed by Qt as a `linuxinput` device and registered as `/dev/input/eventN`.
+
+**Display timings** (RGB 800×480 @ ~60 Hz, 50 MHz pixel clock, sync active high, sync DE mode) are in the `route_rgb` and `display_subsystem` nodes inherited from `rv1106.dtsi` and may need a per-panel overlay (e.g. `pinctrl-0 = <&lcd_rgb_dclk &lcd_rgb_vsync &lcd_rgb_hsync ...>`).
+
+### 3. WiFi (SDIO w1-ctrl + wpa_supplicant)
+
+The board has an onboard SDIO WiFi chip. It needs:
+
+- The `wireless-sdio` driver + `bluetooth-platdata` enabled (already on in the DTS for this board)
+- A wpa_supplicant build in the buildroot rootfs (recipe `package/wpa_supplicant/`)
+- `/etc/wpa_supplicant.conf` with `ctrl_interface=DIR=/var/run/wpa_supplicant`
+- The C++ `wifimanager.cpp` here talks to `wpa_cli -i wlan0` over its control socket
+- A simulated command path is wired up for development without real radio (`-DSIM_WIFI=1`); production needs the real `wpa_cli` calls enabled
+
+### 4. EC11 rotary encoder (board-specific)
+
+`/ { encoder: rotary-encoder { ... }; }` node in the DTS, disabled for `gpio-keys-encoder` because the chosen pin is the debug-console UART TX. To re-enable, remap SW to a free GPIO (e.g. `gpio1 PA6/PA7`).
+
+### 5. Buildroot config
+
+The Luckfox buildroot defconfig is at `config/buildroot_defconfig`. Notable toggles:
+
+```
+BR2_PACKAGE_WPA_SUPPLICANT=y
+BR2_PACKAGE_AHT30_MQTT=y        # optional MQTT helper
+BR2_PACKAGE_QT5=y
+BR2_PACKAGE_QT5BASE_LINUXFB=y   # linuxfb platform
+```
+
+### 6. Kernel rebuild
+
+A full kernel rebuild from the SDK root:
+
+```bash
+cd /path/to/luckfox-pico
+./build.sh kernel                       # just the kernel
+./build.sh                              # kernel + buildroot + image
+```
+
+The resulting `output/Image` and DTBs land in `output/out/` ready to flash with `rkflash.sh`.
+
+### 7. What to re-check before the next kernel bump
+
+When the SDK is updated, re-verify the following patches still apply:
+
+- `aht30.c` is not yet upstream in the kernel IIO subsystem (as of 4.19-era the SDK uses) — if the kernel version moves, port to the new `iio_chan_spec` API
+- `route_rgb` enable line — this is the single line that toggles the whole LCD on; if upstream flips its default, remove our override
+- GT911 touch node — may be merged into the base DTS in a future SDK; remove our copy if so
+- `wireless-bluetooth` pinctrl (`uart1m0_rtsn` + `uart1_gpios`) — Rockchip refactors these regularly
+- `emmc` `rockchip,default-sample-phase = <90>` — panel/emmc-dependent, may need re-tuning for a different flash
+- `sdio_pwrseq` `reset-gpios` — if the WiFi module changes, the GPIO may need updating
 
 ---
 
