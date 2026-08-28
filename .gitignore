@@ -4,7 +4,7 @@
 *.so
 *.a
 
-# QMake/Generated files
+# Qmake/Generated files
 moc_*.cpp
 qrc_*.cpp
 *.stash
@@ -16,8 +16,14 @@ luckfox-shell
 build/
 build_host/
 
-# IDE files
+# IDE / OS files
 *.swp
 *.swo
 *~
 .DS_Store
+
+# Secrets — never commit SSH keys or local env
+*.pem
+*.key
+.env
+.env.local

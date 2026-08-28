@@ -1,12 +1,22 @@
 #!/bin/bash
 # ============================================================
 # Luckfox Shell - Run on Board
+#
+# Required:
+#   LUCKFOX_SSH_KEY  - path to SSH private key
+# Optional:
+#   LUCKFOX_BOARD_IP    - default 192.168.1.3
+#   LUCKFOX_BOARD_USER  - default root
 # ============================================================
 set -e
 
-BOARD_IP="192.168.1.3"
-BOARD_USER="root"
-SSH_KEY="/home/tamnguyen/.ssh/id_ed25519"
+: "${LUCKFOX_SSH_KEY:?ERROR: Set LUCKFOX_SSH_KEY to your SSH private key (e.g. ~/.ssh/id_ed25519)}"
+: "${LUCKFOX_BOARD_IP:=192.168.1.3}"
+: "${LUCKFOX_BOARD_USER:=root}"
+
+BOARD_IP="$LUCKFOX_BOARD_IP"
+BOARD_USER="$LUCKFOX_BOARD_USER"
+SSH_KEY="$LUCKFOX_SSH_KEY"
 APP_NAME="luckfox-shell"
 
 SSH_CMD="ssh -o StrictHostKeyChecking=no -i $SSH_KEY $BOARD_USER@$BOARD_IP"
