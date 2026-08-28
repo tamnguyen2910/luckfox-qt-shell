@@ -28,7 +28,7 @@ Item {
             Text {
                 anchors { right: parent.right; rightMargin: 14; verticalCenter: parent.verticalCenter }
                 text: audioPlayer.playlist.length
-                font.family: T.FONT
+                font.family: T.font
                 font.pixelSize: 10
                 font.bold: true
                 color: root.dk ? root.tD.accent : root.tL.accent
@@ -54,7 +54,7 @@ Item {
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     text: audioPlayer.musicFolderPath
-                    font.family: T.FONT
+                    font.family: T.font
                     font.pixelSize: 10
                     font.bold: true
                     color: root.dk ? root.tD.textFaint : root.tL.textFaint
@@ -101,14 +101,14 @@ Item {
                     }
                     Text {
                         text: "No tracks"
-                        font.family: T.FONT
+                        font.family: T.font
                         font.pixelSize: 12
                         color: root.dk ? root.tD.textFaint : root.tL.textFaint
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                     Text {
                         text: "Scan music folder to begin"
-                        font.family: T.FONT
+                        font.family: T.font
                         font.pixelSize: 9
                         color: root.dk ? root.tD.textFaint : root.tL.textFaint
                         opacity: 0.8
@@ -123,7 +123,7 @@ Item {
         id: trackDelegate
         Item {
             width: listView.width
-            height: 50  // touch-friendly row height (was 46, >=48px touch target)
+            height: 48  // 48px touch target per 8px grid
 
             // ----- Card background -----
             Rectangle {
@@ -162,7 +162,7 @@ Item {
                     Text {
                         anchors.centerIn: parent
                         text: (index + 1)
-                        font.family: T.FONT
+                        font.family: T.font
                         font.pixelSize: 10
                         font.bold: true
                         visible: !(index === root.currentIndex && audioPlayer.isPlaying)
@@ -210,7 +210,7 @@ Item {
                     Text {
                         width: parent.width
                         text: Utils.trackTitle(modelData)
-                        font.family: T.FONT
+                        font.family: T.font
                         font.pixelSize: 13
                         font.bold: index === root.currentIndex
                         color: index === root.currentIndex ? (root.dk ? root.tD.text : root.tL.text) : (root.dk ? root.tD.textDim : root.tL.textDim)
@@ -221,7 +221,7 @@ Item {
                         visible: index === root.currentIndex
                         text: audioPlayer.isPlaying ? "Playing now"
                              : audioPlayer.isPaused ? "Paused" : ""
-                        font.family: T.FONT
+                        font.family: T.font
                         font.pixelSize: 9
                         color: audioPlayer.isPlaying ? (root.dk ? root.tD.accentSoft : root.tL.accentSoft) : (root.dk ? root.tD.warn : root.tL.warn)
                     }

@@ -106,7 +106,7 @@ Item {
                             // Track title
                             Text {
                                 text: audioPlayer.currentTitle
-                                font.family: T.FONT
+                                font.family: T.font
                                 font.pixelSize: 17
                                 font.bold: true
                                 color: root.dk ? root.tD.text : root.tL.text

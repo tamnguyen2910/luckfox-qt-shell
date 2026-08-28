@@ -336,6 +336,11 @@ var music = {
         ok:         "#36d399",
         warn:       "#FBAB00",
         idle:       "#8E8E8E",
+
+        // Playlist list-item tokens
+        activeRow:    "#1a1e2a",
+        rowPress:     "#252a36",
+        rowBorder:    "#3a3f4f",
     },
     light: {
         bgTop:      "#ffffff",
@@ -368,6 +373,11 @@ var music = {
         ok:         "#188a52",
         warn:       "#b45309",
         idle:       "#8a93a6",
+
+        // Playlist list-item tokens
+        activeRow:    "#f0f3f9",
+        rowPress:     "#e0e6f0",
+        rowBorder:    "#d5dbe6",
     },
 }
 

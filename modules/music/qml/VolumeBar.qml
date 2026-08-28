@@ -74,9 +74,9 @@ Item {
             handle: Rectangle {
                 x: volSlider.leftPadding + volSlider.visualPosition * (volSlider.availableWidth - width)
                 y: volSlider.topPadding + volSlider.availableHeight / 2 - height / 2
-                implicitWidth: 20
-                implicitHeight: 20
-                radius: 10
+                implicitWidth: 24
+                implicitHeight: 24
+                radius: 12
                 color: root.dk ? "#FFFFFF" : "#1A2332"
                 border.width: 2
                 border.color: root.dk ? root.tD.accent : root.tL.accent
@@ -88,7 +88,7 @@ Item {
         // Volume percentage label — 44wide, centered
         Text {
             text: Math.round(audioPlayer.volume) + "%"
-            font.family: T.FONT
+            font.family: T.font
             font.pixelSize: 12
             font.bold: true
             color: root.dk ? root.tD.text : root.tL.text

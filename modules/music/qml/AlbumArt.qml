@@ -75,7 +75,7 @@ Item {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "LUCKFOX"
-                    font.family: T.FONT
+                    font.family: T.font
                     font.pixelSize: 6
                     font.bold: true
                     font.letterSpacing: 1.5
@@ -87,7 +87,7 @@ Item {
         // Pause ring overlay while paused/stopped
         Rectangle {
             anchors.fill: parent
-            color: root.dk ? "#000000" : "#1A2332"
+            color: root.dk ? root.tD.textDisabled : root.tL.textDisabled
             radius: width / 2
             opacity: (audioPlayer.isPlaying) ? 0 : 0.28
             Behavior on opacity { NumberAnimation { duration: 200 } }
@@ -96,7 +96,7 @@ Item {
                 text: audioPlayer.isPaused ? "II" : ""
                 font.pixelSize: 24
                 font.bold: true
-                color: root.dk ? "#E0E8FF" : "#F4F6FA"
+                color: root.dk ? root.tD.textPrimary : root.tL.textPrimary
             }
         }
 

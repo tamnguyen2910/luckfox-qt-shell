@@ -59,7 +59,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             Text {
                 text: "Music Player"
-                font.family: T.FONT
+                font.family: T.font
                 font.pixelSize: 16
                 font.bold: true
                 color: root.dk ? root.tD.text : root.tL.text
@@ -98,7 +98,7 @@ Item {
                     id: badgeText
                     anchors.verticalCenter: parent.verticalCenter
                     text: audioPlayer.playlist.length + " tracks"
-                    font.family: T.FONT
+                    font.family: T.font
                     font.pixelSize: 11
                     font.bold: true
                     color: root.dk ? root.tD.text : root.tL.text
