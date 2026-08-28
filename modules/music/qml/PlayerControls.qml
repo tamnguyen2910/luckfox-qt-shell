@@ -36,7 +36,7 @@ Item {
                 spacing: 8
                 Text {
                     text: Utils.formatTime(audioPlayer.position)
-                    font.family: T.font
+                    font.family: T.FONT
                     font.pixelSize: 11
                     font.bold: true
                     color: root.dk ? root.tD.accentSoft : root.tL.accentSoft
@@ -87,7 +87,7 @@ Item {
                 }
                 Text {
                     text: Utils.formatTime(audioPlayer.duration)
-                    font.family: T.font
+                    font.family: T.FONT
                     font.pixelSize: 11
                     font.bold: true
                     color: root.dk ? root.tD.textDim : root.tL.textDim

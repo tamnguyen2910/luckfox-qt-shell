@@ -35,7 +35,7 @@ Item {
 
             Text {
                 text: audioPlayer.statusText
-                font.family: T.font
+                font.family: T.FONT
                 font.pixelSize: 10
                 color: root.dk ? root.tD.textDim : root.tL.textDim
                 anchors.verticalCenter: parent.verticalCenter
@@ -51,7 +51,7 @@ Item {
             text: audioPlayer.duration > 0
                   ? Utils.formatTime(audioPlayer.position) + " / " + Utils.formatTime(audioPlayer.duration)
                   : "--:-- / --:--"
-            font.family: T.font
+            font.family: T.FONT
             font.pixelSize: 10
             font.bold: true
             color: root.dk ? root.tD.textFaint : root.tL.textFaint

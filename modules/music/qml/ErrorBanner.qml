@@ -32,7 +32,7 @@ Item {
         Text {
             id: msg
             anchors { left: parent.left; leftMargin: 8; verticalCenter: parent.verticalCenter }
-            font.family: T.font
+            font.family: T.FONT
             font.pixelSize: 10
             font.bold: true
             color: root.dk ? root.tD.warn : root.tL.warn

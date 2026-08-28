@@ -88,7 +88,7 @@ Item {
         // Volume percentage label — 44wide, centered
         Text {
             text: Math.round(audioPlayer.volume) + "%"
-            font.family: T.font
+            font.family: T.FONT
             font.pixelSize: 12
             font.bold: true
             color: root.dk ? root.tD.text : root.tL.text

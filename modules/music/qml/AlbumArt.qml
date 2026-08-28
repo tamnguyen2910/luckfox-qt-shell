@@ -75,7 +75,7 @@ Item {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "LUCKFOX"
-                    font.family: T.font
+                    font.family: T.FONT
                     font.pixelSize: 6
                     font.bold: true
                     font.letterSpacing: 1.5
