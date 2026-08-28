@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import "Theme.js" as Theme
 import "qrc:/shell/components/themes/Theme.js" as T
 
 // CalendarTab — embeds the 01_Calendar calendar UI as a tab inside the
@@ -44,9 +43,10 @@ Item {
     property var backend: LunarBackend   // injected by shell main.cpp context property
 
     // ---- Responsive layout (parent is narrower than Theme's 800px canvas) ----
-    readonly property real rightW: parent ? Math.max(200, Math.min(parent.width * 0.36, 320)) : Theme.Theme.layout.rightWidth
-    readonly property real gridW: parent ? parent.width - rightW : Theme.Theme.layout.gridWidth
-    readonly property real gridH: parent ? parent.height - Theme.Theme.layout.headerHeight : Theme.Theme.layout.gridHeight
+    readonly property int headerH: 48
+    readonly property real rightW: parent ? Math.max(200, Math.min(parent.width * 0.36, 280)) : 280
+    readonly property real gridW: parent ? parent.width - rightW : 408
+    readonly property real gridH: parent ? parent.height - headerH : 360
 
     Component.onCompleted: {
         if (typeof LunarBackend !== "undefined") backend = LunarBackend
@@ -82,7 +82,7 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.right: parent.right
-            height: Theme.Theme.layout.headerHeight
+            height: calendarTab.headerH
 
             Rectangle { anchors.fill: parent; color: calendarTab.headerBg }
             Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: 1; color: calendarTab.faintLine }
@@ -90,55 +90,55 @@ Item {
             Text {
                 id: monthTitle
                 text: computeMonthTitle(currentYear, currentMonth).toUpperCase()
-                font.pixelSize: Theme.Theme.font.label
-                font.family: "DejaVu Sans"
+                font.pixelSize: T.sizes.tertiary
+                font.family: T.font
                 font.weight: Font.Medium
                 font.letterSpacing: 1.0
                 color: calendarTab.textDim
                 anchors.centerIn: parent
-                anchors.verticalCenterOffset: -12
+                anchors.verticalCenterOffset: -8
             }
             Text {
                 text: currentYear
-                font.pixelSize: Theme.Theme.font.heroYear
-                font.family: "DejaVu Sans"
+                font.pixelSize: T.sizes.title
+                font.family: T.font
                 font.weight: Font.DemiBold
                 color: calendarTab.text
                 anchors.centerIn: parent
-                anchors.verticalCenterOffset: 14
+                anchors.verticalCenterOffset: 10
             }
 
             // Prev / Next month
             Rectangle {
                 id: prevBtn
-                width: 44; height: 44; radius: 22
+                width: 40; height: 40; radius: 20
                 color: "transparent"
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left; anchors.leftMargin: Theme.Theme.spacing.sm
-                Text { text: "‹"; font.pixelSize: Theme.Theme.font.arrow; font.family: "DejaVu Sans"; color: calendarTab.accent; anchors.centerIn: parent }
+                anchors.left: parent.left; anchors.leftMargin: T.spacing.sm
+                Text { text: "‹"; font.pixelSize: 24; font.family: T.font; color: calendarTab.accent; anchors.centerIn: parent }
                 MouseArea { anchors.fill: parent; onClicked: calendarTab.prevMonth() }
             }
             Rectangle {
                 id: nextBtn
-                width: 44; height: 44; radius: 22
+                width: 40; height: 40; radius: 20
                 color: "transparent"
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right; anchors.rightMargin: Theme.Theme.spacing.sm
-                Text { text: "›"; font.pixelSize: Theme.Theme.font.arrow; font.family: "DejaVu Sans"; color: calendarTab.accent; anchors.centerIn: parent }
+                anchors.right: parent.right; anchors.rightMargin: T.spacing.sm
+                Text { text: "›"; font.pixelSize: 24; font.family: T.font; color: calendarTab.accent; anchors.centerIn: parent }
                 MouseArea { anchors.fill: parent; onClicked: calendarTab.nextMonth() }
             }
             // Today button
             Rectangle {
                 id: todayBtn
-                width: todayLabel.implicitWidth + Theme.Theme.spacing.xl * 2
-                height: 36; radius: Theme.Theme.radius.round
+                width: todayLabel.implicitWidth + T.spacing.lg * 2
+                height: 32; radius: T.radius.round
                 color: calendarTab.accent
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.right: nextBtn.left; anchors.rightMargin: Theme.Theme.spacing.md
+                anchors.right: nextBtn.left; anchors.rightMargin: T.spacing.md
                 Text {
                     id: todayLabel
-                    text: "Hôm nay"; font.pixelSize: Theme.Theme.font.button; font.bold: true
-                    font.family: "DejaVu Sans"; color: calendarTab.todayText; anchors.centerIn: parent
+                    text: "Hôm nay"; font.pixelSize: T.sizes.button; font.bold: true
+                    font.family: T.font; color: calendarTab.todayText; anchors.centerIn: parent
                 }
                 MouseArea { anchors.fill: parent; onClicked: calendarTab.goToToday() }
             }
@@ -150,7 +150,7 @@ Item {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            anchors.topMargin: Theme.Theme.layout.headerHeight
+            anchors.topMargin: calendarTab.headerH
             width: calendarTab.gridW
             color: calendarTab.itemBg
             border.width: 1; border.color: calendarTab.itemBorder
@@ -158,7 +158,7 @@ Item {
             Grid {
                 id: grid
                 anchors.fill: parent
-                anchors.margins: Theme.Theme.spacing.sm
+                anchors.margins: T.spacing.sm
                 columns: 7
 
                 readonly property real cellW: width / 7
@@ -170,8 +170,8 @@ Item {
                         width: grid.cellW; height: grid.cellH
                         Text {
                             text: calendarTab.dayNames[index]
-                            font.pixelSize: Theme.Theme.font.weekday
-                            font.family: "DejaVu Sans"
+                            font.pixelSize: T.sizes.tertiary
+                            font.family: T.font
                             font.weight: Font.Medium
                             font.letterSpacing: 0.3
                             color: index === 6 ? calendarTab.holiday : (index === 5 ? calendarTab.accentDim : calendarTab.textDim)
@@ -187,7 +187,7 @@ Item {
                     delegate: Rectangle {
                         id: cell
                         width: grid.cellW - 4; height: grid.cellH - 4
-                        radius: Theme.Theme.radius.md
+                        radius: T.radius.md
                         readonly property bool isEmpty: !modelData || modelData.solarDay <= 0
                         readonly property bool isToday: modelData && modelData.isToday
                         readonly property bool isHoliday: modelData && modelData.isHoliday
@@ -200,7 +200,7 @@ Item {
                         Rectangle {
                             visible: cell.isToday
                             anchors.centerIn: parent
-                            width: 42; height: 42; radius: 21
+                            width: 36; height: 36; radius: 18
                             color: "transparent"
                             border.width: 1.5; border.color: calendarTab.todayFill
                             opacity: 0.3
@@ -208,8 +208,8 @@ Item {
 
                         Text {
                             text: (!cell.isEmpty && modelData.solarDay > 0) ? modelData.solarDay : ""
-                            font.pixelSize: Theme.Theme.font.dayNumber
-                            font.family: "DejaVu Sans"
+                            font.pixelSize: T.sizes.title
+                            font.family: T.font
                             font.bold: cell.isToday
                             color: cell.isToday ? calendarTab.todayText : (cell.isNeighbor ? calendarTab.textMute : calendarTab.text)
                             horizontalAlignment: Text.AlignHCenter
@@ -219,28 +219,28 @@ Item {
                         }
                         Text {
                             text: (!cell.isEmpty && modelData.lunarDay > 0) ? modelData.lunarDay : ""
-                            font.pixelSize: Theme.Theme.font.lunar
-                            font.family: "DejaVu Sans"
+                            font.pixelSize: T.sizes.dataMicro
+                            font.family: T.font
                             color: cell.isToday ? calendarTab.todayText : (cell.isHoliday ? calendarTab.holiday : (cell.isNeighbor ? calendarTab.textMute : calendarTab.textDim))
                             opacity: cell.isToday ? 0.9 : 1.0
                             horizontalAlignment: Text.AlignHCenter
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.top: parent.top
-                            anchors.topMargin: Math.max(2, (grid.cellH - 50) / 2) + 26
+                            anchors.topMargin: Math.max(2, (grid.cellH - 50) / 2) + 24
                         }
                         Row {
                             visible: cell.isHoliday && modelData && modelData.holidayName && modelData.holidayName.length > 0
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.top: parent.top
-                            anchors.topMargin: Math.max(2, (grid.cellH - 50) / 2) + 40
+                            anchors.topMargin: Math.max(2, (grid.cellH - 50) / 2) + 36
                             spacing: 3
-                            Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 4; height: 4; radius: 2; color: calendarTab.holiday }
+                            Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 3; height: 3; radius: 1.5; color: calendarTab.holiday }
                             Text {
                                 text: modelData.holidayName
-                                font.pixelSize: Theme.Theme.font.tiny
-                                font.family: "DejaVu Sans"
+                                font.pixelSize: T.sizes.micro
+                                font.family: T.font
                                 color: calendarTab.holiday
-                                width: grid.cellW - 20
+                                width: grid.cellW - 16
                                 elide: Text.ElideRight
                             }
                         }
@@ -259,14 +259,14 @@ Item {
             Rectangle {
                 id: heroCard
                 anchors.fill: parent
-                anchors.margins: Theme.Theme.spacing.sm
+                anchors.margins: T.spacing.sm
                 color: calendarTab.itemBg
-                radius: Theme.Theme.radius.xl
+                radius: T.radius.xl
                 border.width: 1; border.color: calendarTab.itemBorder
 
                 Rectangle {
                     anchors.left: parent.left; anchors.top: parent.top; anchors.bottom: parent.bottom
-                    anchors.topMargin: Theme.Theme.spacing.xl; anchors.bottomMargin: Theme.Theme.spacing.xl
+                    anchors.topMargin: T.spacing.xl; anchors.bottomMargin: T.spacing.xl
                     width: 3; radius: 2; color: calendarTab.accent
                 }
 
@@ -274,15 +274,15 @@ Item {
                 Text {
                     id: heroClock
                     anchors.left: parent.left; anchors.right: parent.right
-                    anchors.leftMargin: 20; anchors.rightMargin: 16
-                    anchors.top: parent.top; anchors.topMargin: Theme.Theme.spacing.xl
+                    anchors.leftMargin: 16; anchors.rightMargin: 16
+                    anchors.top: parent.top; anchors.topMargin: T.spacing.xl
                     text: calendarTab.clockText
-                    font.pixelSize: 40
+                    font.pixelSize: T.sizes.hero
                     minimumPixelSize: 18
                     fontSizeMode: Text.Fit
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: "DejaVu Sans"
+                    font.family: T.font
                     font.weight: Font.Light
                     color: calendarTab.text
                 }
@@ -297,10 +297,10 @@ Item {
                 Text {
                     id: heroSection
                     anchors.left: heroClock.left; anchors.right: heroClock.right
-                    anchors.top: heroClock.bottom; anchors.topMargin: 16
+                    anchors.top: heroClock.bottom; anchors.topMargin: 12
                     text: "HÔM NAY"
-                    font.pixelSize: Theme.Theme.font.tiny
-                    font.family: "DejaVu Sans"
+                    font.pixelSize: T.sizes.micro
+                    font.family: T.font
                     font.weight: Font.DemiBold
                     font.letterSpacing: 2.0
                     horizontalAlignment: Text.AlignHCenter
@@ -311,8 +311,8 @@ Item {
                     anchors.left: heroClock.left; anchors.right: heroClock.right
                     anchors.top: heroSection.bottom; anchors.topMargin: 4
                     text: calendarTab.heroDateStr
-                    font.pixelSize: Theme.Theme.font.medium
-                    font.family: "DejaVu Sans"
+                    font.pixelSize: T.sizes.primary
+                    font.family: T.font
                     font.weight: Font.Medium
                     horizontalAlignment: Text.AlignHCenter
                     elide: Text.ElideRight
@@ -329,14 +329,14 @@ Item {
                         id: heroDateNum
                         anchors.centerIn: parent
                         text: calendarTab.heroDateNumStr
-                        font.pixelSize: 96
-                        minimumPixelSize: 44
+                        font.pixelSize: 72
+                        minimumPixelSize: 36
                         fontSizeMode: Text.Fit
                         width: parent.width
                         height: parent.height
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
-                        font.family: "DejaVu Sans"; font.weight: Font.Bold
+                        font.family: T.font; font.weight: Font.Bold
                         color: calendarTab.accent
                     }
                 }
@@ -351,10 +351,10 @@ Item {
                 Text {
                     id: heroLunarLine
                     anchors.left: heroClock.left; anchors.right: heroClock.right
-                    anchors.bottom: parent.bottom; anchors.bottomMargin: Theme.Theme.spacing.md
+                    anchors.bottom: parent.bottom; anchors.bottomMargin: T.spacing.md
                     text: calendarTab.heroLunarLine
-                    font.pixelSize: Theme.Theme.font.small
-                    font.family: "DejaVu Sans"
+                    font.pixelSize: T.sizes.secondary
+                    font.family: T.font
                     wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
                     color: calendarTab.textDim

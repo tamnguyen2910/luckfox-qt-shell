@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import "qrc:/shell/components/themes/Theme.js" as T
 
 Item {
     id: root
@@ -42,7 +43,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         anchors.leftMargin: 2
         radius: 2
-        color: "#3b82f6"
+        color: T.dark.accent
         opacity: 0.3
     }
 }
