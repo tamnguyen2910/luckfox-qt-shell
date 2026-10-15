@@ -4,6 +4,17 @@ A Qt5/QML infotainment shell for the **Luckfox Pico Ultra W** — 6 touch tabs o
 
 ![Status](https://img.shields.io/badge/status-active-success) ![Qt](https://img.shields.io/badge/Qt-5.15-41cd52) ![Platform](https://img.shields.io/badge/platform-ARMv7l-blue)
 
+## Demo Video
+
+[▶️ Watch demo video](docs/luckfox-shell.mp4)
+
+<video src="https://github.com/tamnguyen2910/luckfox-qt-shell/raw/master/docs/luckfox-shell.mp4" width="100%" controls preload="metadata">
+  Your browser does not support the video tag.
+  <a href="https://github.com/tamnguyen2910/luckfox-qt-shell/blob/master/docs/luckfox-shell.mp4">Watch demo video</a>
+</video>
+
+> Note: This file (`docs/luckfox-shell.mp4`) is click-to-watch. 
+
 ---
 
 ## Overview
