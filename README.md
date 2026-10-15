@@ -4,16 +4,21 @@ A Qt5/QML infotainment shell for the **Luckfox Pico Ultra W** — 6 touch tabs o
 
 ![Status](https://img.shields.io/badge/status-active-success) ![Qt](https://img.shields.io/badge/Qt-5.15-41cd52) ![Platform](https://img.shields.io/badge/platform-ARMv7l-blue)
 
-## Demo Video
+## Demo
 
-[▶️ Watch demo video](docs/luckfox-shell.mp4)
+### Screenshots (real hardware)
 
-<video src="https://github.com/tamnguyen2910/luckfox-qt-shell/raw/master/docs/luckfox-shell.mp4" width="100%" controls preload="metadata">
-  Your browser does not support the video tag.
-  <a href="https://github.com/tamnguyen2910/luckfox-qt-shell/blob/master/docs/luckfox-shell.mp4">Watch demo video</a>
-</video>
+| Dashboard — telemetry | Music — playback | WiFi — network scan |
+|---|---|---|
+| ![Dashboard on Luckfox Pico Ultra W](docs/dashboard.png) | ![Music player on Luckfox Pico Ultra W](docs/music.png) | ![WiFi manager on Luckfox Pico Ultra W](docs/wifi.png) |
 
-> Note: This file (`docs/luckfox-shell.mp4`) is click-to-watch. 
+### Demo Video
+
+[![Demo preview](docs/demo-preview.gif)](docs/luckfox-shell.mp4)
+
+[▶️ Watch full demo video (docs/luckfox-shell.mp4)](docs/luckfox-shell.mp4)
+
+> GitHub can't inline-preview mp4 files committed to a repo — click the GIF/link above to watch. For autoplay in README, upload the video to YouTube and embed the thumbnail link here instead.
 
 ---
 
